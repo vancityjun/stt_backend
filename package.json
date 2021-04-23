@@ -1,0 +1,23 @@
+{
+  "name": "stt",
+  "version": "1.0.0",
+  "description": "speech to text",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "test",
+    "credential" : "GOOGLE_APPLICATION_CREDENTIALS='/Users/jun/workspace/gcstt/server/we-need-stt-43a87c1321da.json"
+  },
+  "keywords": [
+    "stt"
+  ],
+  "author": "vancityjun",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/speech": "^4.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "nodemon": "^2.0.7"
+  }
+}
