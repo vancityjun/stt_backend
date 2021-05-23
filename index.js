@@ -60,6 +60,10 @@ app.post('/transcript', async (req, res) => {
     model: languageCode,
     wordAlternativesThreshold: 0.9,
   }
+
+  if(!recognizeParams.contentType.indexOf('audio')){
+    res.status(403).send('the file must be audio format')
+  }
   const userRecord = await currentUser(req.headers.authorization)
 
   speechToText.recognize(recognizeParams)
@@ -113,6 +117,22 @@ app.post('/login', async (req, res) => {
       user: userRecord.forReturn(),
       token: jwt.sign(userRecord.forReturn(), PRIVATE_KEY)
     })
+  } else {
+    res.status(401).send({message: 'invalid password'})
+  }
+})
+
+app.post('/password-reset', async (req, res) => {
+  const {userParams} = req.body
+  
+  const userRecord = await user.findOne({email: userParams.email})
+
+  if(!userRecord){
+    res.status(401).send({message: 'user not found'})
+  }
+
+  if ( await userRecord.update({password: await argon2.hash(userParams.password)}) ) {
+    res.send({ message: 'password changed, try login with new password'})
   } else {
     res.status(401).send({message: 'invalid password'})
   }
